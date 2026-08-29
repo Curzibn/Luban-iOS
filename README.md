@@ -36,6 +36,28 @@ let results = await Luban.compress(inputURLs, toDirectory: cacheDirectory)
 - 多图并发压缩，结果与输入顺序一一对应
 - 输出字节数因平台 JPEG 编码器实现（Apple ImageIO / libjpeg-turbo）而与 Android 存在正常差异
 
+# ☕ 捐助
+
+如果这个项目对您有帮助，欢迎通过以下方式支持我的工作。您的支持是我持续改进和维护这个项目的动力。
+
+<div align="center">
+
+<table>
+<tr>
+<td align="center">
+<img src="images/alipay.png" width="300" alt="支付宝收款码" />
+</td>
+<td width="50"></td>
+<td align="center">
+<img src="images/wechat.png" width="300" alt="微信收款码" />
+</td>
+</tr>
+</table>
+
+</div>
+
+感谢您的支持！🙏
+
 ## License
 
 Apache License 2.0，与主库一致。
