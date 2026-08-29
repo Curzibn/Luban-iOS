@@ -34,29 +34,30 @@ public enum Luban {
     }
 
     public static func compress(_ inputURLs: [URL], toDirectory outputDirectory: URL) async -> [CompressionResult] {
-        await withTaskGroup(of: CompressionResult.self) { group in
-            for inputURL in inputURLs {
+        await withTaskGroup(of: (Int, CompressionResult).self) { group in
+            for (index, inputURL) in inputURLs.enumerated() {
                 group.addTask {
                     do {
                         let outputURL = try await compress(inputURL, toDirectory: outputDirectory)
-                        return .success(outputURL)
+                        return (index, .success(outputURL))
                     } catch {
-                        return .failure(error)
+                        return (index, .failure(error))
                     }
                 }
             }
 
-            var results: [CompressionResult] = []
-            for await result in group {
-                results.append(result)
+            var results = [CompressionResult?](repeating: nil, count: inputURLs.count)
+            for await (index, result) in group {
+                results[index] = result
             }
-            return results
+            return results.compactMap { $0 }
         }
     }
 
     static func generateOutputURL(inputName: String, directory: URL) -> URL {
         let timestamp = Int(Date().timeIntervalSince1970 * 1000)
-        return directory.appendingPathComponent("\(inputName)_\(timestamp).jpg")
+        let unique = UUID().uuidString.prefix(8).lowercased()
+        return directory.appendingPathComponent("\(inputName)_\(timestamp)_\(unique).jpg")
     }
 
     private enum Input {

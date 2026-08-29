@@ -92,15 +92,24 @@ final class LubanIntegrationTests: XCTestCase {
 
     func testBatchCompressionRunsConcurrently() async throws {
         let inputs = [
-            try writeJPEG(width: 1920, height: 1080, quality: 85, name: "batch-a"),
-            try writeJPEG(width: 1000, height: 4000, quality: 85, name: "batch-b"),
-            try writeJPEG(width: 500, height: 300, quality: 85, name: "batch-c")
+            try writeJPEG(width: 6000, height: 8000, quality: 85, name: "batch-a"),
+            try writeJPEG(width: 500, height: 300, quality: 85, name: "batch-b"),
+            try writeJPEG(width: 3000, height: 4000, quality: 85, name: "batch-c")
         ]
 
         let results = await Luban.compress(inputs, toDirectory: workDirectory)
 
         XCTAssertEqual(results.count, 3)
-        for case .success(let outputURL) in results {
+        for (index, result) in results.enumerated() {
+            guard case .success(let outputURL) = result else {
+                XCTFail("Batch item \(index) failed: \(result)")
+                continue
+            }
+            let expectedPrefix = inputs[index].deletingPathExtension().lastPathComponent
+            XCTAssertTrue(
+                outputURL.lastPathComponent.hasPrefix(expectedPrefix),
+                "Result at index \(index) should correspond to input \(expectedPrefix), got \(outputURL.lastPathComponent)"
+            )
             XCTAssertTrue(FileManager.default.fileExists(atPath: outputURL.path))
         }
     }
