@@ -4,6 +4,8 @@ Luban for iOS —— Swift 图片压缩库，像素级还原微信朋友圈压�
 
 与 [Luban](https://github.com/Curzibn/Luban)（Android）、[flutter_luban](https://github.com/Curzibn/flutter_luban)（Flutter）同源，复用同一套自适应统一图像压缩算法体系。
 
+> 如果你需要**在线或命令行**的图片压缩（PNG / JPEG / GIF / WebP / AVIF，免费，网页 / API / CLI 共用一份额度），可以看看同一系列的 **LubanPNG（鲁班刨）**：https://lubanpng.wizthink.cn/?utm_source=luban2&utm_medium=readme-ios&utm_campaign=launch
+
 ## 安装
 
 Xcode 项目通过 Swift Package Manager 引用本仓库 URL，或在 `Package.swift` 中添加：
