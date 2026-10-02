@@ -36,6 +36,36 @@ final class CompressionCalculatorTests: XCTestCase {
         XCTAssertEqual(target.targetSizeKb, 100)
     }
 
+    func testNineToTwentyPhotoIsNotLongImage() {
+        let target = calculator.calculateTarget(width: 1080, height: 2400)
+
+        XCTAssertEqual(target.width, 1080)
+        XCTAssertEqual(target.height, 2400)
+        XCTAssertEqual(target.estimatedSizeKb, 285)
+        XCTAssertFalse(target.isLongImage)
+        XCTAssertNil(target.targetSizeKb)
+    }
+
+    func testEighteenToNinePhotoIsNotLongImage() {
+        let target = calculator.calculateTarget(width: 1080, height: 2160)
+
+        XCTAssertEqual(target.width, 1080)
+        XCTAssertEqual(target.height, 2160)
+        XCTAssertEqual(target.estimatedSizeKb, 256)
+        XCTAssertFalse(target.isLongImage)
+        XCTAssertNil(target.targetSizeKb)
+    }
+
+    func testRatioPointFourBoundaryIsStillLongImage() {
+        let target = calculator.calculateTarget(width: 1000, height: 2500)
+
+        XCTAssertEqual(target.width, 1000)
+        XCTAssertEqual(target.height, 2500)
+        XCTAssertEqual(target.estimatedSizeKb, 275)
+        XCTAssertTrue(target.isLongImage)
+        XCTAssertEqual(target.targetSizeKb, 275)
+    }
+
     func testZeroOrNegativeDimensionsReturnZeroTarget() {
         XCTAssertEqual(calculator.calculateTarget(width: 0, height: 0).width, 0)
         XCTAssertEqual(calculator.calculateTarget(width: 0, height: 0).height, 0)
@@ -52,14 +82,14 @@ final class CompressionCalculatorTests: XCTestCase {
         XCTAssertFalse(target.isLongImage)
     }
 
-    func testLongImageWallClampsLongSideToBase() {
+    func testWallImageWithRatioAboveThresholdClampsLongSideToBase() {
         let target = calculator.calculateTarget(width: 5000, height: 12000)
 
         XCTAssertEqual(target.width, 600)
         XCTAssertEqual(target.height, 1440)
         XCTAssertEqual(target.estimatedSizeKb, 129)
-        XCTAssertTrue(target.isLongImage)
-        XCTAssertEqual(target.targetSizeKb, 129)
+        XCTAssertFalse(target.isLongImage)
+        XCTAssertNil(target.targetSizeKb)
     }
 
     func testHugePixelCountTriggersQuarterTrap() {

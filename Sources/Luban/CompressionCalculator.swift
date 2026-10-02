@@ -105,7 +105,7 @@ public struct CompressionCalculator: Sendable {
             estimatedSize = max(estimatedSize, 250)
         }
 
-        let isLongImage = ratio <= 0.5
+        let isLongImage = ratio <= 0.4
         let targetSizeKb = isLongImage ? estimatedSize : nil
 
         return CompressionTarget(
