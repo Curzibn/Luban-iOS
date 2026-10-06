@@ -12,7 +12,7 @@ Xcode 项目通过 Swift Package Manager 引用本仓库 URL，或在 `Package.s
 
 ```swift
 dependencies: [
-    .package(url: "https://github.com/Curzibn/Luban-iOS.git", from: "0.1.0")
+    .package(url: "https://github.com/Curzibn/Luban-iOS.git", from: "0.1.1")
 ]
 ```
 
